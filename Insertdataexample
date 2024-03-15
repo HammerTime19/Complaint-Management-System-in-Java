@@ -1,0 +1,51 @@
+package Login;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import Login.MySQLConnection; // Import the MySQLConnection class
+
+
+public class InsertDataExample {
+
+    public static void main(String[] args) {
+        // Establish a database connection
+        Connection connection = MySQLConnection.getConnection();
+        
+        if (connection != null) {
+            try {
+                // Create the SQL INSERT statement
+                String sql = "INSERT INTO students (StudentID,FullName, Division, Year, Course) VALUES (?,?,?,?,?)";
+                
+                // Create a PreparedStatement with the SQL statement
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                
+                // Set parameters for the PreparedStatement (replace ? with actual values)
+                preparedStatement.setInt(1, 19);
+                preparedStatement.setString(2, "Sanika");
+                preparedStatement.setString(3, "F");
+                  preparedStatement.setInt(4, 121);
+                    preparedStatement.setString(5, "BScIT");
+                
+                // Execute the PreparedStatement to insert the data
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Data inserted successfully!");
+                } else {
+                    System.out.println("Failed to insert data!");
+                }
+                
+                // Close the PreparedStatement
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                // Close the database connection
+                MySQLConnection.closeConnection();
+            }
+        } else {
+            System.out.println("Failed to establish database connection!");
+        }
+    }
+}
+
